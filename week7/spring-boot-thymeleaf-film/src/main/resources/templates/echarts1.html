@@ -5,36 +5,164 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>好评图表</title>
     <script src="/js/echarts.min.js"></script>
+    <link rel="stylesheet" href="/css/navbar.css">
     <style>
-        #main {
-            margin:auto
+        body {
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
         }
-
-        #show-final {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            background-color: #007BFF;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(34, 40, 49, 0.95);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border-radius: 0 0 18px 18px;
+            padding: 0 40px;
+            height: 64px;
+        }
+        .navbar .left-links {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        .navbar .left-links a {
+            color: #fff;
+            font-weight: 500;
+            font-size: 17px;
+            margin: 0 18px;
             text-decoration: none;
-            margin-top: 20px;
-            transition: background-color 0.3s, color 0.3s;
+            transition: color 0.2s;
+            padding: 0 8px;
+            line-height: 64px;
+            border-bottom: 2px solid transparent;
         }
-
+        .navbar .left-links a:hover {
+            color: #00d2ff;
+            border-bottom: 2px solid #00d2ff;
+        }
+        .navbar .right-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .navbar .right-links .btn {
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .navbar .right-links .btn-login {
+            background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,114,255,0.10);
+        }
+        .navbar .right-links .btn-login:hover {
+            background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+        }
+        .navbar .right-links .btn-register {
+            background: #fff;
+            color: #0072ff;
+            border: 1.5px solid #0072ff;
+        }
+        .navbar .right-links .btn-register:hover {
+            background: #0072ff;
+            color: #fff;
+        }
+        .navbar .right-links .btn-logout {
+            background: #ff4d4f;
+            color: #fff;
+            border: 1.5px solid #ff4d4f;
+        }
+        .navbar .right-links .btn-logout:hover {
+            background: #fff;
+            color: #ff4d4f;
+        }
+        .navbar .right-links .divider {
+            color: #888;
+            margin: 0 6px;
+            font-size: 18px;
+        }
+        #vip-tag {
+            display: none;
+        }
+        #main {
+            width: 90vw;
+            max-width: 1200px;
+            height: 70vh;
+            min-height: 500px;
+            margin: 48px auto 0 auto;
+            background: rgba(255,255,255,0.06);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            padding: 24px 0 0 0;
+        }
+        #show-final {
+            display: block;
+            margin: 32px auto 0 auto;
+            padding: 14px 48px;
+            font-size: 20px;
+            color: #fff;
+            background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+            border: none;
+            border-radius: 32px;
+            box-shadow: 0 4px 24px rgba(0, 114, 255, 0.18);
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 2px;
+            transition: background 0.3s, transform 0.2s;
+        }
         #show-final:hover {
-            background-color: #0056b3;
+            background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        @media (max-width: 900px) {
+            #main {
+                width: 98vw;
+                height: 60vw;
+                min-height: 320px;
+            }
+            .navbar {
+                padding: 0 10px;
+            }
+        }
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 0 4px;
+            }
+            .navbar .left-links a {
+                font-size: 15px;
+                margin: 0 6px;
+                line-height: 40px;
+            }
+            .navbar .right-links .btn {
+                font-size: 13px;
+                padding: 4px 10px;
+            }
+            #main {
+                width: 100vw;
+                height: 60vw;
+                min-height: 220px;
+                border-radius: 0;
+            }
+            #show-final {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
         }
     </style>
-
-    <link rel="stylesheet" href="/css/navbar.css">
-
 </head>
 <body>
-
 <div class="navbar">
     <div class="left-links">
         <a th:href="@{/index}">主页</a>
@@ -42,33 +170,24 @@
         <a th:href="@{/search}">搜索</a>
         <a th:href="@{/print1}">报表</a>
         <a th:href="@{/print2}">统计</a>
-        <a th:href="@{/PayView}">支付</a>
-
+        <a id="vip-tag">VIP</a>
     </div>
     <div class="right-links">
-        <a id="vip-tag" style="display: none;">VIP</a>
+        <a id="vip-tag">VIP</a>
         <a id="noVip-tag" style="display: none;">普通</a>
         <div th:if="${session.user}">
-                <span id="head_span1">
-                    <a th:href="@{/toLogOut(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}">退出</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                </span>
+            <button class="btn btn-logout" th:href="@{/toLogOut(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}" onclick="window.location.href=this.getAttribute('th:href')">退出</button>
         </div>
         <div th:unless="${session.user}">
-                <span id="head_span2">
-                    <a th:href="@{/toLoginPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                    <a th:href="@{/toRegisterPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}">注册</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                </span>
+            <button class="btn btn-login" th:href="@{/toLoginPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}" onclick="window.location.href=this.getAttribute('th:href')">登录</button>
+            <span class="divider">|</span>
+            <button class="btn btn-register" th:href="@{/toRegisterPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}" onclick="window.location.href=this.getAttribute('th:href')">注册</button>
         </div>
     </div>
 </div>
 
-
-
-
-
-
-<div id="main" style="width: 1200px; height: 800px;"></div>
-<button id="show-final" style="margin-top: 20px;">直接显示结果</button>
+<div id="main"></div>
+<button id="show-final">直接显示结果</button>
 
 <script>
     var chartDom = document.getElementById('main');
@@ -76,8 +195,11 @@
     var option;
 
     option = {
+        backgroundColor: 'rgba(255,255,255,0.02)',
         xAxis: {
-            max: 'dataMax'
+            max: 'dataMax',
+            axisLine: { lineStyle: { color: '#00c6ff' } },
+            axisLabel: { color: '#fff', fontWeight: 'bold' }
         },
         yAxis: {
             type: 'category',
@@ -85,7 +207,9 @@
             inverse: true,
             animationDuration: 100,
             animationDurationUpdate: 100,
-            max: 10
+            max: 10,
+            axisLine: { lineStyle: { color: '#00c6ff' } },
+            axisLabel: { color: '#fff', fontWeight: 'bold' }
         },
         series: [
             {
@@ -96,12 +220,26 @@
                 label: {
                     show: true,
                     position: 'right',
-                    valueAnimation: true
+                    valueAnimation: true,
+                    color: '#00c6ff',
+                    fontWeight: 'bold',
+                    fontSize: 18
+                },
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(1, 0, 0, 1, [
+                        { offset: 0, color: '#00c6ff' },
+                        { offset: 1, color: '#0072ff' }
+                    ])
+                },
+                barWidth: 24,
+                emphasis: {
+                    focus: 'series'
                 }
             }
         ],
         legend: {
-            show: true
+            show: true,
+            textStyle: { color: '#fff', fontWeight: 'bold' }
         },
         animationDuration: 0,
         animationDurationUpdate: 3000,
@@ -121,6 +259,11 @@
                     z: 100
                 }
             ]
+        },
+        tooltip: {
+            show: true,
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            textStyle: { color: '#fff' }
         }
     };
 
@@ -203,9 +346,7 @@
 
     document.getElementById('show-final').addEventListener('click', showFinalResult);
 
-
     fetchData();
-    // window.onload = function() {
 
     function checkMembership() {
         fetch('/checkMembership', {
@@ -226,11 +367,11 @@
     }
 
     checkMembership();
-
-    // };
-
-
-
 </script>
 </body>
 </html>
+
+
+
+
+

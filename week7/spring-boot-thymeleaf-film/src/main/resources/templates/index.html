@@ -6,6 +6,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <style>
+        /*上方操作栏样式*/
+        body {
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(34, 40, 49, 0.95);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border-radius: 0 0 18px 18px;
+            padding: 0 40px;
+            height: 64px;
+        }
+        .navbar .left-links {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        .navbar .left-links a {
+            color: #fff;
+            font-weight: 500;
+            font-size: 17px;
+            margin: 0 18px;
+            text-decoration: none;
+            transition: color 0.2s;
+            padding: 0 8px;
+            line-height: 64px;
+            border-bottom: 2px solid transparent;
+        }
+        .navbar .left-links a:hover {
+            color: #00d2ff;
+            border-bottom: 2px solid #00d2ff;
+        }
+        .navbar .right-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .navbar .right-links .btn {
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .navbar .right-links .btn-login {
+            background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,114,255,0.10);
+        }
+        .navbar .right-links .btn-login:hover {
+            background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+        }
+        .navbar .right-links .btn-register {
+            background: #fff;
+            color: #0072ff;
+            border: 1.5px solid #0072ff;
+        }
+        .navbar .right-links .btn-register:hover {
+            background: #0072ff;
+            color: #fff;
+        }
+        .navbar .right-links .btn-logout {
+            background: #ff4d4f;
+            color: #fff;
+            border: 1.5px solid #ff4d4f;
+        }
+        .navbar .right-links .btn-logout:hover {
+            background: #fff;
+            color: #ff4d4f;
+        }
+        .navbar .right-links .divider {
+            color: #888;
+            margin: 0 6px;
+            font-size: 18px;
+        }
+        #vip-tag, #noVip-tag {
+            color: #fff;
+            font-weight: bold;
+            margin-right: 10px;
+            display: none;
+        }
 
         /* 轮播图部分 */
 
@@ -50,6 +141,7 @@
             text-align: center;
             background: rgba(0, 0, 0, 0.5);
             border-radius: 50%;
+            -webkit-user-select: none;
             user-select: none;
 
         }
@@ -148,21 +240,23 @@
         <a th:href="@{/print1}">报表</a>
         <a th:href="@{/print2}">统计</a>
         <a th:href="@{/PayView}">支付</a>
-
     </div>
     <div class="right-links">
-        <a id="vip-tag" style="display: none;">VIP</a>
-        <a id="noVip-tag" style="display: none;">普通</a>
+        <a id="vip-tag">VIP</a>
+        <a id="noVip-tag">普通</a>
         <div th:if="${session.user}">
-                <span id="head_span1">
-                    <a th:href="@{/toLogOut(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}">退出</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                </span>
+            <button class="btn btn-logout"
+                th:href="@{/toLogOut(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}"
+                onclick="window.location.href=this.getAttribute('th:href')">退出</button>
         </div>
         <div th:unless="${session.user}">
-                <span id="head_span2">
-                    <a th:href="@{/toLoginPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                    <a th:href="@{/toRegisterPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}">注册</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                </span>
+            <button class="btn btn-login"
+                th:href="@{/toLoginPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}"
+                onclick="window.location.href=this.getAttribute('th:href')">登录</button>
+            <span class="divider">|</span>
+            <button class="btn btn-register"
+                th:href="@{/toRegisterPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}"
+                onclick="window.location.href=this.getAttribute('th:href')">注册</button>
         </div>
     </div>
 </div>

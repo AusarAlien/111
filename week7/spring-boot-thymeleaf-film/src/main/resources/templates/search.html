@@ -2,104 +2,267 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>电影搜索</title>
-
+    <link rel="stylesheet" href="/css/navbar.css">
     <style>
+        body {
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(34, 40, 49, 0.95);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border-radius: 0 0 18px 18px;
+            padding: 0 40px;
+            height: 64px;
+        }
+        .navbar .left-links {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        .navbar .left-links a {
+            color: #fff;
+            font-weight: 500;
+            font-size: 17px;
+            margin: 0 18px;
+            text-decoration: none;
+            transition: color 0.2s;
+            padding: 0 8px;
+            line-height: 64px;
+            border-bottom: 2px solid transparent;
+        }
+        .navbar .left-links a:hover {
+            color: #00d2ff;
+            border-bottom: 2px solid #00d2ff;
+        }
+        .navbar .right-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .navbar .right-links .btn {
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 500;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .navbar .right-links .btn-login {
+            background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,114,255,0.10);
+        }
+        .navbar .right-links .btn-login:hover {
+            background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+        }
+        .navbar .right-links .btn-register {
+            background: #fff;
+            color: #0072ff;
+            border: 1.5px solid #0072ff;
+        }
+        .navbar .right-links .btn-register:hover {
+            background: #0072ff;
+            color: #fff;
+        }
+        .navbar .right-links .btn-logout {
+            background: #ff4d4f;
+            color: #fff;
+            border: 1.5px solid #ff4d4f;
+        }
+        .navbar .right-links .btn-logout:hover {
+            background: #fff;
+            color: #ff4d4f;
+        }
+        .navbar .right-links .divider {
+            color: #888;
+            margin: 0 6px;
+            font-size: 18px;
+        }
+        #vip-tag, #noVip-tag {
+            color: #fff;
+            font-weight: bold;
+            margin-right: 10px;
+            display: none;
+        }
+
         h1 {
-            color: #4CAF50; /* 设置标题颜色 */
-            text-align: center; /* 文本居中 */
+            color: #00c6ff;
+            text-align: center;
+            margin-top: 32px;
+            letter-spacing: 2px;
         }
         form {
-            background-color: #f2f2f2; /* 设置表单背景颜色 */
-            border: 1px solid #ccc; /* 设置表单边框 */
-            padding: 20px; /* 设置表单内边距 */
-            margin: auto; /* 设置表单外边距自动，使表单居中 */
-            width: 50%; /* 设置表单宽度 */
+            background-color: rgba(255,255,255,0.10);
+            border: 1px solid #0072ff22;
+            border-radius: 16px;
+            padding: 28px 24px 18px 24px;
+            margin: 32px auto 24px auto;
+            width: 90%;
+            max-width: 480px;
+            box-shadow: 0 4px 24px rgba(0,114,255,0.06);
         }
-        input[type=text], button {
-            width: 100%; /* 设置输入框和按钮宽度 */
-            padding: 12px; /* 设置输入框和按钮内边距 */
-            margin: 8px 0; /* 设置输入框和按钮外边距 */
-            display: inline-block; /* 设置输入框和按钮为内联块级元素 */
-            border: 1px solid #ccc; /* 设置输入框和按钮边框 */
-            box-sizing: border-box; /* 设置盒模型为边框盒 */
+        input[type=text] {
+            width: 100%;
+            padding: 14px 16px;
+            margin: 8px 0 16px 0;
+            border: 1.5px solid #00c6ff44;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background: rgba(255,255,255,0.18);
+            transition: box-shadow 0.2s;
         }
-        button {
-            background-color: #4CAF50; /* 设置按钮背景颜色 */
-            color: white; /* 设置按钮文字颜色 */
-            cursor: pointer; /* 设置鼠标指针为手形 */
+        input[type=text]:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #00c6ff;
+            background: #fff;
         }
-        button:hover {
-            opacity: 0.8; /* 当鼠标悬停时改变按钮透明度 */
+        button[type=submit] {
+            width: 100%;
+            padding: 12px 0;
+            border-radius: 20px;
+            border: none;
+            background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            box-shadow: 0 2px 8px rgba(0, 114, 255, 0.10);
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button[type=submit]:hover {
+            background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+            transform: translateY(-2px) scale(1.03);
         }
         .movie {
             position: relative;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-            margin: auto; /* 设置上下边距为 10px，左右边距自动计算 */
-            width: 75%; /* 设置宽度为父元素宽度的 80% */
-            height: 10%;
+            border: 1px solid #0072ff22;
+            background: rgba(255,255,255,0.13);
+            padding: 18px 18px 18px 170px;
+            border-radius: 14px;
+            margin: 24px auto;
+            width: 90%;
+            max-width: 800px;
+            min-height: 160px;
+            box-shadow: 0 2px 12px rgba(0,114,255,0.06);
+            overflow: hidden;
         }
         .movie h2 {
-            margin: 0;
+            margin: 0 0 8px 0;
             font-size: 1.5em;
+            color: #0072ff;
         }
         .movie img {
-            height: 150px;
-            float: left;
-            margin-right: 10px;
+            height: 140px;
+            width: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            position: absolute;
+            left: 18px;
+            top: 18px;
+            background: #eee;
         }
         .movie p {
-            margin-top: 5px;
+            margin: 4px 0 0 0;
+            color: #333;
         }
         .details-button {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 100px; /* 设置按钮宽度 */
-            height: 50px; /* 设置按钮高度 */
-            background-color: #4CAF50; /* 设置按钮背景颜色 */
-            border: none; /* 移除按钮边框 */
-            color: white; /* 设置按钮文字颜色 */
-            text-align: center; /* 文字居中 */
-            font-size: 16px; /* 设置文字大小 */
-            transition: 0.3s; /* 添加过渡效果 */
-            border-radius: 12px; /* 设置按钮边角的圆滑度 */
+            top: 24px;
+            right: 24px;
+            width: 90px;
+            height: 38px;
+            background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+            border: none;
+            color: white;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.3s;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,114,255,0.10);
         }
         .details-button:hover {
-            background-color: #45a049; /* 当鼠标悬停时改变按钮背景颜色 */
+            background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
         }
         .clear {
             clear: both;
         }
-
         .pagination {
-            position: absolute;
-            left: 0;
-            right: 0;
-            background-color: #f2f2f2;
-            padding: 1px 0;
+            background-color: rgba(255,255,255,0.10);
+            padding: 12px 0 18px 0;
             text-align: center;
+            border-radius: 0 0 18px 18px;
+            margin: 0 auto 0 auto;
+            width: 100%;
         }
         .pagination a {
-            color: black;
+            color: #0072ff;
             padding: 8px 16px;
             text-decoration: none;
             transition: background-color .3s;
             border: 1px solid #ddd;
             margin: 0 4px;
+            border-radius: 8px;
         }
         .pagination a.active {
-            background-color: #4CAF50;
+            background-color: #00c6ff;
             color: white;
-            border: 1px solid #4CAF50;
+            border: 1px solid #00c6ff;
         }
         .pagination a:hover:not(.active) {
-            background-color: #ddd;
+            background-color: #e6f7ff;
+        }
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 0 4px;
+            }
+            .navbar .left-links a {
+                font-size: 15px;
+                margin: 0 6px;
+                line-height: 40px;
+            }
+            .navbar .right-links .btn {
+                font-size: 13px;
+                padding: 4px 10px;
+            }
+            form, .movie {
+                width: 98vw;
+                min-width: 0;
+                padding: 12px 4px;
+            }
+            .movie {
+                padding-left: 0;
+                min-height: 0;
+            }
+            .movie img {
+                position: static;
+                display: block;
+                margin: 0 auto 12px auto;
+            }
+            .details-button {
+                position: static;
+                width: 100%;
+                margin-top: 10px;
+            }
         }
     </style>
-    <link rel="stylesheet" href="/css/navbar.css">
     <script src="/js/VipLabel.js"></script>
 </head>
 <body>
@@ -111,61 +274,58 @@
         <a th:href="@{/print1}">报表</a>
         <a th:href="@{/print2}">统计</a>
         <a th:href="@{/PayView}">支付</a>
-
     </div>
     <div class="right-links">
-        <a id="vip-tag" style="display: none;">VIP</a>
-        <a id="noVip-tag" style="display: none;">普通</a>
+        <a id="vip-tag">VIP</a>
+        <a id="noVip-tag">普通</a>
         <div th:if="${session.user}">
-                <span id="head_span1">
-                    <a th:href="@{/toLogOut(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}">退出</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                </span>
+            <button class="btn btn-logout"
+                th:href="@{/toLogOut(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}"
+                onclick="window.location.href=this.getAttribute('th:href')">退出</button>
         </div>
         <div th:unless="${session.user}">
-                <span id="head_span2">
-                    <a th:href="@{/toLoginPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                    <a th:href="@{/toRegisterPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}">注册</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-                </span>
+            <button class="btn btn-login"
+                th:href="@{/toLoginPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}"
+                onclick="window.location.href=this.getAttribute('th:href')">登录</button>
+            <span class="divider">|</span>
+            <button class="btn btn-register"
+                th:href="@{/toRegisterPage(returnUrl=${httpServletRequest.requestURI + (httpServletRequest.queryString != null ? '?' + httpServletRequest.queryString : '')})}"
+                onclick="window.location.href=this.getAttribute('th:href')">注册</button>
         </div>
     </div>
 </div>
 
-
-
 <form action="/search" method="get">
-    <input type="text" name="name" placeholder="例:(输入)张国荣" th:value="${name}">
-    <button type="submit">Search</button>
+    <input type="text" name="name" placeholder="例:(输入)张国荣" th:value="${name}" aria-label="搜索电影名">
+    <button type="submit">搜索</button>
 </form>
 <h1>搜索结果</h1>
 <div th:unless="${movies != null and movies.size() > 0}" style="text-align: center;">
     <h2>无搜索结果</h2>
 </div>
 <div th:each="movie : ${movies}" class="movie">
-    <img th:src="'/image/' + ${movie.image}" th:alt="${movie.name}">
+    <img th:src="'/image/' + ${movie.image}" th:alt="${movie.name}" th:attr="alt=${movie.name}">
     <h2 th:text="${movie.name}">Movie Name</h2>
-    <button class="details-button" th:onclick="'location.href=\'/movieView?movieId=' + ${movie.movieId} + '\';'">Details</button>
+    <button class="details-button" th:onclick="'location.href=\'/movieView?movieId=' + ${movie.movieId} + '\';'">详情</button>
     <p th:text="'类型: ' + ${movie.genre}">Genre</p>
     <p th:text="'地区: ' + ${movie.region}">Region</p>
     <p th:text="'简介: ' + ${movie.introduce}">Introduction</p>
     <div class="clear"></div>
 </div>
 
-
 <div class="pagination">
     <br>
     <span><a th:href="@{/search(name=${name},pageNo=1)}">首页</a></span>&nbsp;&nbsp;
     <span th:switch="${currentPage}">
-					<a th:case="1" th:href="@{/search(name=${name},pageNo=${currentPage})}">上一页</a>&nbsp;&nbsp;
-					<a  th:case="*" th:href="@{/search(name=${name},pageNo=${currentPage - 1})}">上一页</a>
-				</span>
-
+        <a th:case="1" th:href="@{/search(name=${name},pageNo=${currentPage})}">上一页</a>&nbsp;&nbsp;
+        <a th:case="*" th:href="@{/search(name=${name},pageNo=${currentPage - 1})}">上一页</a>
+    </span>
     <span th:if="${currentPage}==${PageCount}">
-				<a th:href="@{/search(name=${name},pageNo=1)}">下一页</a>&nbsp;&nbsp;
-			</span>
+        <a th:href="@{/search(name=${name},pageNo=1)}">下一页</a>&nbsp;&nbsp;
+    </span>
     <span th:unless="${currentPage}==${PageCount}">
-				<a th:href="@{/search(name=${name},pageNo=${currentPage + 1})}">下一页</a>
-			</span>
-
+        <a th:href="@{/search(name=${name},pageNo=${currentPage + 1})}">下一页</a>
+    </span>
     <span>&nbsp;&nbsp;<a th:href="@{/search(name=${name},pageNo=${PageCount})}">尾页</a></span>
     <br/><br/>
 </div>

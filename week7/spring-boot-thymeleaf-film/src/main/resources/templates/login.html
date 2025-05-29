@@ -26,10 +26,12 @@
 
 <!--  用户登录form表单 -->
 <div class="form-signin">
-    <img class="mb-4" th:src="@{/login/img/login.jpg}" width="72" height="72">
+    <img class="mb-4" th:src="@{/login/img/login.jpg}" width="72" height="72" alt="Login Image">
     <h1 class="h3 mb-3 font-weight-normal" th:text="#{login.tip}">请登录</h1>
-    <input type="text" name="username" class="form-control" th:placeholder="#{login.username}" required="" autofocus="">
-    <input type="password" name="password" class="form-control" th:placeholder="#{login.password}" required="">
+    <label for="username" th:text="#{login.username}">用户名</label>
+    <input type="text" id="username" name="username" class="form-control" th:placeholder="#{login.username}" placeholder="用户名" title="请输入用户名" required="" autofocus="">
+    <label for="password" th:text="#{login.password}">密码</label>
+    <input type="password" id="password" name="password" class="form-control" th:placeholder="#{login.password}" placeholder="密码" title="请输入密码" required="">
     <div class="checkbox mb-3">
         <label>
             <input type="checkbox" value="remember-me">[[#{login.rememberme}]]
